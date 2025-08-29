@@ -1,0 +1,12 @@
+[
+  {
+    "title": "Lagu Pertama",
+    "artist": "Artis A",
+    "url": "https://cdn.jsdelivr.net/gh/username/my-music-repo/lagu1.mp3"
+  },
+  {
+    "title": "Lagu Kedua",
+    "artist": "Artis B",
+    "url": "https://cdn.jsdelivr.net/gh/username/my-music-repo/lagu2.mp3"
+  }
+]
