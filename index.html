@@ -3,25 +3,539 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Music Player</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Music Player Profesional</title>
+  <style>
+    :root {
+      --primary-color: #1db954;
+      --secondary-color: #191414;
+      --background-color: #121212;
+      --card-color: #181818;
+      --text-color: #ffffff;
+      --text-secondary: #b3b3b3;
+      --hover-color: #1ed760;
+      --transition-speed: 0.3s;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: var(--background-color);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    header {
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--secondary-color);
+      color: var(--text-color);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .tagline {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .playlist-container {
+      margin-bottom: 2rem;
+    }
+
+    .playlist-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .playlist-header h2 {
+      font-size: 1.5rem;
+    }
+
+    .search-box {
+      background: var(--card-color);
+      border: none;
+      border-radius: 4px;
+      color: var(--text-color);
+      padding: 0.5rem 1rem;
+      width: 200px;
+    }
+
+    .playlist {
+      list-style: none;
+      padding: 0;
+    }
+
+    .playlist-item {
+      background: var(--card-color);
+      margin: 0.5rem 0;
+      padding: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all var(--transition-speed);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .playlist-item:hover {
+      background: #282828;
+      transform: translateY(-2px);
+    }
+
+    .playlist-item.active {
+      background: rgba(29, 185, 84, 0.2);
+      border-left: 4px solid var(--primary-color);
+    }
+
+    .playlist-item .play-icon {
+      color: var(--primary-color);
+      font-size: 1.2rem;
+    }
+
+    .song-info {
+      flex: 1;
+    }
+
+    .song-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .song-artist {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .song-duration {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .player-container {
+      position: sticky;
+      bottom: 0;
+      background: var(--card-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .now-playing {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .now-playing-image {
+      width: 60px;
+      height: 60px;
+      border-radius: 6px;
+      background: linear-gradient(45deg, #1db954, #191414);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .now-playing-info .song-title {
+      font-size: 1.1rem;
+    }
+
+    .audio-controls {
+      width: 100%;
+    }
+
+    .progress-container {
+      width: 100%;
+      height: 5px;
+      background: #5a5a5a;
+      border-radius: 5px;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--primary-color);
+      border-radius: 5px;
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+
+    .time-container {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .player-buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .control-btn {
+      background: none;
+      border: none;
+      color: var(--text-color);
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all var(--transition-speed);
+    }
+
+    .control-btn:hover {
+      color: var(--hover-color);
+      transform: scale(1.1);
+    }
+
+    .play-pause-btn {
+      background: var(--primary-color);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: black;
+    }
+
+    .play-pause-btn:hover {
+      background: var(--hover-color);
+      transform: scale(1.05);
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--secondary-color);
+      color: var(--text-color);
+      margin-top: 2rem;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-secondary);
+    }
+
+    .error-message {
+      background: #ff4d4d;
+      color: white;
+      padding: 1rem;
+      border-radius: 6px;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        padding: 1rem;
+      }
+      
+      .playlist-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      
+      .search-box {
+        width: 100%;
+      }
+      
+      .now-playing {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>🎵 My Music Playlist</h1>
+    <h1>🎵 My Music Player</h1>
+    <p class="tagline">Nikmati koleksi musik favorit Anda</p>
   </header>
 
   <main>
-    <ul id="playlist"></ul>
-    <div class="player">
-      <audio id="player" controls></audio>
+    <div class="playlist-container">
+      <div class="playlist-header">
+        <h2>Daftar Putar</h2>
+        <input type="text" class="search-box" placeholder="Cari lagu..." id="searchInput">
+      </div>
+      
+      <ul class="playlist" id="playlist"></ul>
+    </div>
+
+    <div class="player-container">
+      <div class="now-playing" id="nowPlaying">
+        <div class="now-playing-image">🎵</div>
+        <div class="now-playing-info">
+          <div class="song-title" id="currentSongTitle">Pilih lagu untuk memulai</div>
+          <div class="song-artist" id="currentSongArtist">-</div>
+        </div>
+      </div>
+      
+      <div class="audio-controls">
+        <div class="progress-container" id="progressContainer">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="time-container">
+          <span id="currentTime">0:00</span>
+          <span id="duration">0:00</span>
+        </div>
+        
+        <div class="player-buttons">
+          <button class="control-btn" id="prevBtn">⏮</button>
+          <button class="control-btn play-pause-btn" id="playPauseBtn">▶</button>
+          <button class="control-btn" id="nextBtn">⏭</button>
+        </div>
+      </div>
+      
+      <audio id="audioPlayer"></audio>
     </div>
   </main>
 
   <footer>
-    <p>© 2025 My Music Player</p>
+    <p>© 2025 My Music Player | Dibuat dengan ❤️ untuk pecinta musik</p>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    // Konstanta dan variabel global
+    const MUSIC_DATA_URL = "music.json";
+    const audioPlayer = document.getElementById('audioPlayer');
+    const playlistElement = document.getElementById('playlist');
+    const currentSongTitle = document.getElementById('currentSongTitle');
+    const currentSongArtist = document.getElementById('currentSongArtist');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progressBar = document.getElementById('progressBar');
+    const progressContainer = document.getElementById('progressContainer');
+    const currentTimeElement = document.getElementById('currentTime');
+    const durationElement = document.getElementById('duration');
+    const searchInput = document.getElementById('searchInput');
+
+    let musicList = [];
+    let currentSongIndex = 0;
+    let isPlaying = false;
+
+    // Fungsi utama untuk memuat musik
+    async function loadMusic() {
+      try {
+        showLoadingState();
+        const response = await fetch(MUSIC_DATA_URL);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        musicList = await response.json();
+        displayPlaylist(musicList);
+        setupEventListeners();
+      } catch (error) {
+        showError(`Gagal memuat musik: ${error.message}`);
+        console.error("Error loading music:", error);
+      }
+    }
+
+    // Menampilkan state loading
+    function showLoadingState() {
+      playlistElement.innerHTML = '<div class="loading">Memuat daftar lagu...</div>';
+    }
+
+    // Menampilkan pesan error
+    function showError(message) {
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.textContent = message;
+      document.querySelector('.playlist-container').prepend(errorDiv);
+    }
+
+    // Menampilkan daftar putar
+    function displayPlaylist(songs) {
+      playlistElement.innerHTML = '';
+      
+      if (songs.length === 0) {
+        playlistElement.innerHTML = '<div class="loading">Tidak ada lagu yang ditemukan</div>';
+        return;
+      }
+      
+      songs.forEach((song, index) => {
+        const listItem = createPlaylistItem(song, index);
+        playlistElement.appendChild(listItem);
+      });
+    }
+
+    // Membuat elemen item daftar putar
+    function createPlaylistItem(song, index) {
+      const li = document.createElement('li');
+      li.className = 'playlist-item';
+      li.dataset.index = index;
+      
+      li.innerHTML = `
+        <div class="play-icon">▶</div>
+        <div class="song-info">
+          <div class="song-title">${song.title}</div>
+          <div class="song-artist">${song.artist}</div>
+        </div>
+        <div class="song-duration">${formatTime(song.duration || 0)}</div>
+      `;
+      
+      li.addEventListener('click', () => playSong(index));
+      return li;
+    }
+
+    // Memutar lagu berdasarkan index
+    function playSong(index) {
+      if (index < 0 || index >= musicList.length) return;
+      
+      currentSongIndex = index;
+      const song = musicList[currentSongIndex];
+      
+      // Update UI
+      updateNowPlayingInfo(song);
+      highlightCurrentSong();
+      
+      // Set sumber audio dan putar
+      audioPlayer.src = song.url;
+      audioPlayer.load();
+      audioPlayer.play().then(() => {
+        isPlaying = true;
+        updatePlayPauseButton();
+      }).catch(error => {
+        console.error("Error playing audio:", error);
+        showError("Tidak dapat memutar lagu. Pastikan format audio didukung.");
+      });
+    }
+
+    // Memperbarui info lagu yang sedang diputar
+    function updateNowPlayingInfo(song) {
+      currentSongTitle.textContent = song.title;
+      currentSongArtist.textContent = song.artist;
+    }
+
+    // Menandai lagu yang sedang diputar di daftar putar
+    function highlightCurrentSong() {
+      // Hapus class active dari semua item
+      document.querySelectorAll('.playlist-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      // Tambahkan class active ke item yang sedang diputar
+      const currentItem = document.querySelector(`.playlist-item[data-index="${currentSongIndex}"]`);
+      if (currentItem) {
+        currentItem.classList.add('active');
+        
+        // Scroll ke item yang sedang aktif
+        currentItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    // Memperbarui tampilan tombol play/pause
+    function updatePlayPauseButton() {
+      playPauseBtn.textContent = isPlaying ? '⏸' : '▶';
+    }
+
+    // Memformat waktu (detik) menjadi menit:detik
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    // Memperbarui progress bar
+    function updateProgress() {
+      const { currentTime, duration } = audioPlayer;
+      const progressPercent = (currentTime / duration) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+      
+      currentTimeElement.textContent = formatTime(currentTime);
+      durationElement.textContent = formatTime(duration);
+    }
+
+    // Mengatur progress bar ketika diklik
+    function setProgress(e) {
+      const width = this.clientWidth;
+      const clickX = e.offsetX;
+      const duration = audioPlayer.duration;
+      audioPlayer.currentTime = (clickX / width) * duration;
+    }
+
+    // Memutar lagu berikutnya
+    function nextSong() {
+      currentSongIndex = (currentSongIndex + 1) % musicList.length;
+      playSong(currentSongIndex);
+    }
+
+    // Memutar lagu sebelumnya
+    function prevSong() {
+      currentSongIndex = (currentSongIndex - 1 + musicList.length) % musicList.length;
+      playSong(currentSongIndex);
+    }
+
+    // Mengatur event listeners
+    function setupEventListeners() {
+      // Event listener untuk audio player
+      audioPlayer.addEventListener('timeupdate', updateProgress);
+      audioPlayer.addEventListener('ended', nextSong);
+      
+      // Event listener untuk kontrol pemutaran
+      playPauseBtn.addEventListener('click', () => {
+        if (isPlaying) {
+          audioPlayer.pause();
+        } else {
+          audioPlayer.play();
+        }
+        isPlaying = !isPlaying;
+        updatePlayPauseButton();
+      });
+      
+      prevBtn.addEventListener('click', prevSong);
+      nextBtn.addEventListener('click', nextSong);
+      
+      // Event listener untuk progress bar
+      progressContainer.addEventListener('click', setProgress);
+      
+      // Event listener untuk pencarian
+      searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredSongs = musicList.filter(song => 
+          song.title.toLowerCase().includes(searchTerm) || 
+          song.artist.toLowerCase().includes(searchTerm)
+        );
+        displayPlaylist(filteredSongs);
+      });
+    }
+
+    // Inisialisasi aplikasi ketika DOM sudah dimuat
+    document.addEventListener('DOMContentLoaded', loadMusic);
+  </script>
 </body>
-</html>
+  </html>
